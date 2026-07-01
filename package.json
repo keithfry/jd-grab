@@ -12,7 +12,8 @@
     "test:unit": "playwright test tests/unit",
     "test:integration": "playwright test tests/integration",
     "test:report": "playwright show-report",
-    "screenshots": "node scripts/generate-screenshots.mjs"
+    "screenshots": "node scripts/generate-screenshots.mjs",
+    "build": "./build.sh"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",

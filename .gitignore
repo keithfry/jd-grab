@@ -23,3 +23,6 @@ test-results/
 
 # Generated store screenshots (run `npm run screenshots` to regenerate)
 store-assets/screenshots/
+
+# Packaged extension zip (run `npm run build` to regenerate)
+build/
