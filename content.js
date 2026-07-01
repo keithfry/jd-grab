@@ -595,6 +595,7 @@ function selectWellfoundDescription() {
 
     const range = document.createRange();
     range.selectNodeContents(el);
+    window.focus();
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);
@@ -614,6 +615,7 @@ function selectGlassdoorDescription() {
     }
     const range = document.createRange();
     range.selectNodeContents(el);
+    window.focus();
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);
@@ -635,6 +637,7 @@ function selectIndeedDescription() {
 
     const range = document.createRange();
     range.selectNodeContents(el);
+    window.focus();
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);
@@ -663,6 +666,7 @@ function selectWelcomeToTheJungleDescription() {
 
     const range = document.createRange();
     range.selectNodeContents(el);
+    window.focus();
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);
@@ -727,7 +731,8 @@ function selectAboutTheJobSection() {
         range.setEndAfter(contentSpan.lastChild || contentSpan);
       }
 
-      // Apply the selection
+      // Apply the selection (window must be focused for selection to stick)
+      window.focus();
       const selection = window.getSelection();
       selection.removeAllRanges();
       selection.addRange(range);
@@ -753,7 +758,8 @@ function selectAboutTheJobSection() {
     const range = document.createRange();
     range.selectNodeContents(descriptionDiv);
 
-    // Apply the selection
+    // Apply the selection (window must be focused for selection to stick)
+    window.focus();
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);

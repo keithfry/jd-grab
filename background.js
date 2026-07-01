@@ -29,18 +29,28 @@ async function handleOpenAndSelect(url, target) {
 
   await waitForTabComplete(tabId);
 
-  // Content script may still be initializing — retry once on failure
-  try {
-    await chrome.tabs.sendMessage(tabId, { action: 'selectJobDescription' });
-  } catch {
-    setTimeout(async () => {
-      try {
-        await chrome.tabs.sendMessage(tabId, { action: 'selectJobDescription' });
-      } catch (e) {
-        console.warn('LinkedIn Job Quick Select: Could not reach content script in new tab', e);
-      }
-    }, 1500);
+  // Ensure the new window/tab has focus so selection is visible
+  if (target !== 'tab') {
+    const tab = await chrome.tabs.get(tabId);
+    await chrome.windows.update(tab.windowId, { focused: true });
   }
+
+  // Content script may still be initializing — retry with backoff
+  await sendWithRetry(tabId, { action: 'selectJobDescription' });
+}
+
+async function sendWithRetry(tabId, message, attempts = 5, delayMs = 800) {
+  for (let i = 0; i < attempts; i++) {
+    try {
+      await chrome.tabs.sendMessage(tabId, message);
+      return;
+    } catch {
+      if (i < attempts - 1) {
+        await new Promise((r) => setTimeout(r, delayMs));
+      }
+    }
+  }
+  console.warn('LinkedIn Job Quick Select: Could not reach content script after retries');
 }
 
 function waitForTabComplete(tabId) {
