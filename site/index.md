@@ -12,8 +12,8 @@ Remotely with one keystroke.
 ## What it does
 
 JD Grab adds a keyboard shortcut (and right-click menu) that selects the full
-job description on a supported job posting page and copies it to your
-clipboard — no dragging, no partial selections.
+job description on a supported job posting page — no dragging, no partial
+selections. Copy it with your browser's usual copy shortcut (Cmd/Ctrl+C).
 
 ## Supported sites
 
@@ -34,6 +34,10 @@ link to `job-boards.greenhouse.io` (works normally); others link to a custom
 company career page, and those don't have a consistent layout JD Grab can
 reliably select text from. Selecting the description directly inside the
 `my.greenhouse.io` modal itself always works.
+
+## Changelog
+
+See what's new in each release on the [Changelog](./changelog/).
 
 ## Privacy
 
