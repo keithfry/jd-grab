@@ -6,7 +6,7 @@ layout: default
 # JD Grab
 
 Select and copy job description text on LinkedIn, Indeed, Glassdoor, Wellfound,
-and Welcome to the Jungle with one keystroke.
+Welcome to the Jungle, Greenhouse, Lever, Ashby, and ZipRecruiter with one keystroke.
 
 ## What it does
 
@@ -21,6 +21,17 @@ clipboard — no dragging, no partial selections.
 - Glassdoor
 - Wellfound
 - Welcome to the Jungle
+- Greenhouse
+- Lever
+- Ashby
+- ZipRecruiter
+
+**Note on Greenhouse:** on `my.greenhouse.io`, the "open job title in a new
+tab/window" shortcut opens whichever URL the posting links to. Some companies
+link to `job-boards.greenhouse.io` (works normally); others link to a custom
+company career page, and those don't have a consistent layout JD Grab can
+reliably select text from. Selecting the description directly inside the
+`my.greenhouse.io` modal itself always works.
 
 ## Privacy
 

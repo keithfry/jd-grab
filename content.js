@@ -49,6 +49,81 @@ function isWelcomeToTheJungleDedicatedPage() {
   return isWelcomeToTheJungle() && /^\/jobs\//.test(window.location.pathname);
 }
 
+// Check if we're on Greenhouse (boards.greenhouse.io or job-boards.greenhouse.io)
+function isGreenhouse() {
+  return window.location.hostname.includes('greenhouse.io');
+}
+
+// Check if we're on a dedicated Greenhouse job page (e.g. /company/jobs/12345)
+function isGreenhouseDedicatedPage() {
+  return isGreenhouse() && /\/jobs\/\d+/.test(window.location.pathname);
+}
+
+// Check if we're on my.greenhouse.io (candidate job search/discovery portal,
+// where jobs open in a modal instead of navigating to a dedicated URL)
+function isGreenhouseMy() {
+  return window.location.hostname === 'my.greenhouse.io';
+}
+
+// Check if a my.greenhouse.io job details modal is currently open
+function isGreenhouseMyModalOpen() {
+  return isGreenhouseMy() && !!document.querySelector('.application-description.body');
+}
+
+// Check if we're on Lever
+function isLever() {
+  return window.location.hostname.includes('lever.co');
+}
+
+// Check if we're on a dedicated Lever job page (e.g. /company/<uuid>)
+function isLeverDedicatedPage() {
+  return isLever() && /^\/[^/]+\/[0-9a-f-]{36}/.test(window.location.pathname);
+}
+
+// Check if we're on Ashby
+function isAshby() {
+  return window.location.hostname === 'jobs.ashbyhq.com';
+}
+
+// Check if we're on a dedicated Ashby job page (e.g. /company/<uuid>)
+function isAshbyDedicatedPage() {
+  return isAshby() && /^\/[^/]+\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/.test(window.location.pathname);
+}
+
+// Check if we're on ZipRecruiter
+function isZipRecruiter() {
+  return window.location.hostname.includes('ziprecruiter.com');
+}
+
+// Check if we're on a dedicated ZipRecruiter job page (e.g. /c/Company/Job/Title/-in-City,ST)
+function isZipRecruiterDedicatedPage() {
+  return isZipRecruiter() && /^\/c\/[^/]+\/Job\//.test(window.location.pathname);
+}
+
+// Check if we're on the ZipRecruiter search-results two-pane layout
+// (e.g. /jobs-search?...&lk=<jobKey>), where the selected job's description
+// renders into a right-hand detail pane instead of a dedicated page
+function isZipRecruiterSearchPanel() {
+  return isZipRecruiter() && /^\/jobs-search/.test(window.location.pathname);
+}
+
+// True if either the dedicated page or the search-results panel currently
+// has a job description loaded (job pages are dedicated by definition;
+// the panel only "has" a job once the user clicks one from the list)
+function isZipRecruiterJobPage() {
+  return isZipRecruiterDedicatedPage() || isZipRecruiterSearchPanel();
+}
+
+// Find the "Job description" section heading, whose text is a stable,
+// job-independent label (unlike the surrounding hashed/utility classes)
+function findZipRecruiterDescriptionHeading() {
+  const headings = document.querySelectorAll('h2');
+  for (const heading of headings) {
+    if (heading.textContent.trim() === 'Job description') return heading;
+  }
+  return null;
+}
+
 // Check if we're on a job page
 function isJobPage() {
   if (isWellfound()) {
@@ -64,6 +139,21 @@ function isJobPage() {
   }
   if (isWelcomeToTheJungle()) {
     return /^\/jobs\//.test(window.location.pathname);
+  }
+  if (isGreenhouseMy()) {
+    return isGreenhouseMyModalOpen();
+  }
+  if (isGreenhouse()) {
+    return isGreenhouseDedicatedPage();
+  }
+  if (isLever()) {
+    return isLeverDedicatedPage();
+  }
+  if (isAshby()) {
+    return isAshbyDedicatedPage();
+  }
+  if (isZipRecruiter()) {
+    return isZipRecruiterJobPage();
   }
   const url = window.location.href;
   return url.includes('/jobs/') || url.includes('/jobs?') || url.includes('/jobs#') || url.match(/\/jobs$/);
@@ -175,8 +265,13 @@ function handleKeyboardShortcut(e) {
   const matchesCombined = shortcutMatches(currentCombinedShortcut);
 
   if (matchesMain || matchesTitle || matchesCombined) {
-    // Don't interfere if user is typing in input fields
-    if (activeElement && (
+    // Don't interfere if user is typing in input fields. Exception: a modifier
+    // shortcut (Alt/Ctrl/Meta) can't insert a character, so it's safe to fire
+    // even when focus is trapped inside a modal dialog (e.g. Greenhouse's job
+    // details modal autofocuses its first form field on open).
+    const hasModifier = e.altKey || e.ctrlKey || e.metaKey;
+    const focusTrappedInModal = hasModifier && !!activeElement?.closest('[role="dialog"]');
+    if (!focusTrappedInModal && activeElement && (
       activeElement.tagName === 'INPUT' ||
       activeElement.tagName === 'TEXTAREA' ||
       activeElement.isContentEditable
@@ -463,7 +558,12 @@ function waitForContentAndSelect() {
       document.querySelector('#job-description') ||
       document.querySelector('#jobDescriptionText') ||
       document.querySelector('[class*="JobDetails_jobDescription"]') ||
-      document.querySelector('[data-testid="job-card-v2"]')
+      document.querySelector('[data-testid="job-card-v2"]') ||
+      document.querySelector('.job__description.body') ||
+      document.querySelector('.application-description.body') ||
+      document.querySelector('div[data-qa="job-description"]') ||
+      document.querySelector('#overview') ||
+      !!findZipRecruiterDescriptionHeading()
     );
 
     if (contentReady) {
@@ -553,6 +653,42 @@ function findJobTitleUrl() {
   if (isWelcomeToTheJungle()) {
     if (isWelcomeToTheJungleDedicatedPage()) return window.location.href;
     debugLog('warn', 'Could not determine Welcome to the Jungle job URL');
+    return null;
+  }
+
+  if (isGreenhouseMy()) {
+    // The title link's target varies by company: some point at job-boards.greenhouse.io,
+    // others at the company's own career page (which proxies the Greenhouse posting).
+    const link = document.querySelector('.application-form-header--title')?.closest('a');
+    if (link?.href) return link.href;
+    debugLog('warn', 'Could not find Greenhouse job link in my.greenhouse.io modal');
+    return null;
+  }
+
+  if (isGreenhouse()) {
+    if (isGreenhouseDedicatedPage()) return window.location.href;
+    debugLog('warn', 'Could not determine Greenhouse job URL');
+    return null;
+  }
+
+  if (isLever()) {
+    if (isLeverDedicatedPage()) return window.location.href;
+    debugLog('warn', 'Could not determine Lever job URL');
+    return null;
+  }
+
+  if (isAshby()) {
+    if (isAshbyDedicatedPage()) return window.location.href;
+    debugLog('warn', 'Could not determine Ashby job URL');
+    return null;
+  }
+
+  if (isZipRecruiter()) {
+    // Both layouts encode the selected job in the current URL: the dedicated
+    // page IS the job URL, and the search panel reflects the selected job
+    // via the `lk` query param, so the page URL deep-links back to it.
+    if (isZipRecruiterJobPage()) return window.location.href;
+    debugLog('warn', 'Could not determine ZipRecruiter job URL');
     return null;
   }
 
@@ -684,10 +820,214 @@ function selectWelcomeToTheJungleDescription() {
   }
 }
 
+function selectGreenhouseDescription() {
+  try {
+    const el = document.querySelector('.job__description.body')
+      || document.querySelector('#content');
+
+    if (!el) {
+      debugLog('warn', 'Could not find Greenhouse job description element');
+      return;
+    }
+
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    window.focus();
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    debugLog('log', 'Greenhouse description selected successfully');
+  } catch (error) {
+    debugLog('error', 'Error selecting Greenhouse description', error);
+  }
+}
+
+function selectGreenhouseMyDescription() {
+  try {
+    const el = document.querySelector('.application-description.body');
+
+    if (!el) {
+      debugLog('warn', 'Could not find my.greenhouse.io job description element (modal not open?)');
+      return;
+    }
+
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    window.focus();
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    debugLog('log', 'my.greenhouse.io description selected successfully');
+  } catch (error) {
+    debugLog('error', 'Error selecting my.greenhouse.io description', error);
+  }
+}
+
+function selectLeverDescription() {
+  try {
+    const el = document.querySelector('div[data-qa="job-description"]')?.closest('.section-wrapper.page-full-width')
+      || document.querySelector('div.section-wrapper.page-full-width:not(.accent-section)');
+
+    if (!el) {
+      debugLog('warn', 'Could not find Lever job description element');
+      return;
+    }
+
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    window.focus();
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    debugLog('log', 'Lever description selected successfully');
+  } catch (error) {
+    debugLog('error', 'Error selecting Lever description', error);
+  }
+}
+
+function selectAshbyDescription() {
+  try {
+    const overview = document.querySelector('#overview');
+    const el = overview?.querySelector('[class*="_descriptionText_"]') || overview;
+
+    if (!el) {
+      debugLog('warn', 'Could not find Ashby job description element');
+      return;
+    }
+
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    window.focus();
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    debugLog('log', 'Ashby description selected successfully');
+  } catch (error) {
+    debugLog('error', 'Error selecting Ashby description', error);
+  }
+}
+
+function selectZipRecruiterDescription() {
+  try {
+    const heading = findZipRecruiterDescriptionHeading();
+    const el = heading?.nextElementSibling;
+
+    if (!el) {
+      debugLog('warn', 'Could not find ZipRecruiter job description element');
+      return;
+    }
+
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    window.focus();
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    // 'auto' (not 'smooth') so the scroll completes immediately rather than
+    // animating — a smooth scroll leaves an async window during which
+    // ZipRecruiter's own scroll-linked re-renders (rating widget, or a
+    // freshly hydrating page from the open-and-select flow) can clear the
+    // selection before it settles.
+    el.scrollIntoView({ behavior: 'auto', block: 'start' });
+    debugLog('log', 'ZipRecruiter description selected successfully');
+    guardZipRecruiterSelection(el);
+  } catch (error) {
+    debugLog('error', 'Error selecting ZipRecruiter description', error);
+  }
+}
+
+// ZipRecruiter's company-rating widget (Breakroom quiz progress bar, hover
+// tooltips) sits directly above the job description and re-renders on
+// scroll. That re-render clears the browser's Selection object even though
+// the description's DOM nodes are untouched — so scrolling up through the
+// rating section drops the selection. Separately, a freshly opened tab
+// (open-and-select flow) may still be hydrating, which can swap out the
+// description element entirely rather than just clearing the selection.
+// Watch for both cases (an emptied selection, user not actively typing
+// elsewhere) and silently restore it, re-locating the element if the
+// original node was replaced.
+// Polls rather than listening for 'selectionchange': if the page clears the
+// selection synchronously (e.g. during our own scrollIntoView call, before
+// a freshly-attached listener could ever see it), an event-driven guard
+// misses that first clearing entirely and never recovers. Polling checks
+// immediately on setup and repeatedly afterward, so there's no such gap.
+let zipRecruiterSelectionGuardInterval = null;
+function guardZipRecruiterSelection(el, timeoutMs = 4000, intervalMs = 150) {
+  if (zipRecruiterSelectionGuardInterval) {
+    clearInterval(zipRecruiterSelectionGuardInterval);
+    zipRecruiterSelectionGuardInterval = null;
+  }
+
+  const deadline = Date.now() + timeoutMs;
+
+  function check() {
+    if (Date.now() > deadline) {
+      clearInterval(zipRecruiterSelectionGuardInterval);
+      zipRecruiterSelectionGuardInterval = null;
+      return;
+    }
+
+    const selection = window.getSelection();
+    if (selection && selection.toString().trim().length > 0) return;
+
+    if (!el.isConnected) {
+      const heading = findZipRecruiterDescriptionHeading();
+      const freshEl = heading?.nextElementSibling;
+      if (!freshEl) return;
+      el = freshEl;
+    }
+
+    const activeElement = document.activeElement;
+    if (activeElement && (
+      activeElement.tagName === 'INPUT' ||
+      activeElement.tagName === 'TEXTAREA' ||
+      activeElement.isContentEditable
+    )) return;
+
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    debugLog('log', 'Restored ZipRecruiter description selection after scroll cleared it');
+  }
+
+  check();
+  zipRecruiterSelectionGuardInterval = setInterval(check, intervalMs);
+}
+
 function selectAboutTheJobSection() {
   try {
+    if (isZipRecruiter()) {
+      selectZipRecruiterDescription();
+      return;
+    }
+
+    if (isAshby()) {
+      selectAshbyDescription();
+      return;
+    }
+
     if (isWelcomeToTheJungle()) {
       selectWelcomeToTheJungleDescription();
+      return;
+    }
+
+    if (isGreenhouseMy()) {
+      selectGreenhouseMyDescription();
+      return;
+    }
+
+    if (isGreenhouse()) {
+      selectGreenhouseDescription();
+      return;
+    }
+
+    if (isLever()) {
+      selectLeverDescription();
       return;
     }
 
