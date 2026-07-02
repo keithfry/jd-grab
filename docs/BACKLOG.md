@@ -1,13 +1,5 @@
 # Backlog
 
-## Site support
-
-Candidate job sites for future JD Grab support, not yet implemented.
-
-### WeWorkRemotely
-
-Not yet investigated. Added to backlog per user request.
-
 ## Infrastructure
 
 ### Changelog on github.io

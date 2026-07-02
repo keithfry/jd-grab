@@ -90,6 +90,16 @@ function isAshbyDedicatedPage() {
   return isAshby() && /^\/[^/]+\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/.test(window.location.pathname);
 }
 
+// Check if we're on We Work Remotely
+function isWeWorkRemotely() {
+  return window.location.hostname.includes('weworkremotely.com');
+}
+
+// Check if we're on a dedicated WWR job page (e.g. /remote-jobs/<company-slug>)
+function isWeWorkRemotelyDedicatedPage() {
+  return isWeWorkRemotely() && !!document.querySelector('.lis-container__job__content__description');
+}
+
 // Check if we're on ZipRecruiter
 function isZipRecruiter() {
   return window.location.hostname.includes('ziprecruiter.com');
@@ -154,6 +164,9 @@ function isJobPage() {
   }
   if (isZipRecruiter()) {
     return isZipRecruiterJobPage();
+  }
+  if (isWeWorkRemotely()) {
+    return isWeWorkRemotelyDedicatedPage();
   }
   const url = window.location.href;
   return url.includes('/jobs/') || url.includes('/jobs?') || url.includes('/jobs#') || url.match(/\/jobs$/);
@@ -563,6 +576,7 @@ function waitForContentAndSelect() {
       document.querySelector('.application-description.body') ||
       document.querySelector('div[data-qa="job-description"]') ||
       document.querySelector('#overview') ||
+      document.querySelector('.lis-container__job__content__description') ||
       !!findZipRecruiterDescriptionHeading()
     );
 
@@ -689,6 +703,12 @@ function findJobTitleUrl() {
     // via the `lk` query param, so the page URL deep-links back to it.
     if (isZipRecruiterJobPage()) return window.location.href;
     debugLog('warn', 'Could not determine ZipRecruiter job URL');
+    return null;
+  }
+
+  if (isWeWorkRemotely()) {
+    if (isWeWorkRemotelyDedicatedPage()) return window.location.href;
+    debugLog('warn', 'Could not determine We Work Remotely job URL');
     return null;
   }
 
@@ -999,10 +1019,37 @@ function guardZipRecruiterSelection(el, timeoutMs = 4000, intervalMs = 150) {
   zipRecruiterSelectionGuardInterval = setInterval(check, intervalMs);
 }
 
+function selectWeWorkRemotelyDescription() {
+  try {
+    const el = document.querySelector('.lis-container__job__content__description');
+
+    if (!el) {
+      debugLog('warn', 'Could not find We Work Remotely job description element');
+      return;
+    }
+
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    window.focus();
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    debugLog('log', 'We Work Remotely description selected successfully');
+  } catch (error) {
+    debugLog('error', 'Error selecting We Work Remotely description', error);
+  }
+}
+
 function selectAboutTheJobSection() {
   try {
     if (isZipRecruiter()) {
       selectZipRecruiterDescription();
+      return;
+    }
+
+    if (isWeWorkRemotely()) {
+      selectWeWorkRemotelyDescription();
       return;
     }
 

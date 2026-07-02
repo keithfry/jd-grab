@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "JD Grab",
   "version": "1.8.0",
-  "description": "Select and copy job description text on LinkedIn, Indeed, Glassdoor, Wellfound, Welcome to the Jungle, Greenhouse, Lever, Ashby, and ZipRecruiter with one keystroke.",
+  "description": "Select and copy job description text on LinkedIn, Indeed, Glassdoor, Wellfound, Welcome to the Jungle, Greenhouse, Lever, Ashby, ZipRecruiter, and We Work Remotely with one keystroke.",
   "permissions": ["storage", "windows", "tabs", "contextMenus"],
   "icons": {
     "16": "icons/icon16.png",
@@ -26,7 +26,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.linkedin.com/*", "*://*.wellfound.com/*", "*://*.indeed.com/*", "*://*.glassdoor.com/*", "*://*.welcometothejungle.com/*", "*://*.greenhouse.io/*", "*://*.lever.co/*", "*://jobs.ashbyhq.com/*", "*://*.ziprecruiter.com/*"],
+      "matches": ["*://*.linkedin.com/*", "*://*.wellfound.com/*", "*://*.indeed.com/*", "*://*.glassdoor.com/*", "*://*.welcometothejungle.com/*", "*://*.greenhouse.io/*", "*://*.lever.co/*", "*://jobs.ashbyhq.com/*", "*://*.ziprecruiter.com/*", "*://*.weworkremotely.com/*"],
       "js": ["storage.js", "content.js"],
       "run_at": "document_idle"
     }

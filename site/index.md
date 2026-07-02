@@ -6,7 +6,8 @@ layout: default
 # JD Grab
 
 Select and copy job description text on LinkedIn, Indeed, Glassdoor, Wellfound,
-Welcome to the Jungle, Greenhouse, Lever, Ashby, and ZipRecruiter with one keystroke.
+Welcome to the Jungle, Greenhouse, Lever, Ashby, ZipRecruiter, and We Work
+Remotely with one keystroke.
 
 ## What it does
 
@@ -25,6 +26,7 @@ clipboard — no dragging, no partial selections.
 - Lever
 - Ashby
 - ZipRecruiter
+- We Work Remotely
 
 **Note on Greenhouse:** on `my.greenhouse.io`, the "open job title in a new
 tab/window" shortcut opens whichever URL the posting links to. Some companies
