@@ -38,6 +38,29 @@ async function shootExtensionPages() {
     await optionsPage.setViewportSize({ width: 1280, height: 800 });
     await optionsPage.goto(`chrome-extension://${extensionId}/options.html`);
     await optionsPage.waitForTimeout(300);
+
+    // The options page can be taller than the 800px canvas, which clips
+    // content. Shrink it to fit within the canvas (never enlarge) and center.
+    await optionsPage.evaluate(() => {
+      const container = document.querySelector('.container');
+      const rect = container.getBoundingClientRect();
+      const scale = Math.min(1, 1280 / rect.width, 800 / rect.height);
+
+      container.style.width = `${rect.width}px`;
+      container.style.flexShrink = '0';
+
+      document.body.style.margin = '0';
+      document.body.style.width = '1280px';
+      document.body.style.height = '800px';
+      document.body.style.display = 'flex';
+      document.body.style.alignItems = 'center';
+      document.body.style.justifyContent = 'center';
+
+      container.style.transform = `scale(${scale})`;
+      container.style.transformOrigin = 'center';
+    });
+    await optionsPage.waitForTimeout(100);
+
     await optionsPage.screenshot({ path: path.join(OUT_DIR, 'options-page.png') });
     await optionsPage.close();
 
