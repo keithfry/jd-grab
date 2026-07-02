@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JD Grab — Manual Test Links</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+  h1 { font-size: 1.4rem; }
+  section { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #ddd; }
+  h2 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+  a { display: inline-block; margin-right: 1rem; }
+  .fallback { color: #666; font-size: 0.9rem; }
+  .note { color: #b45309; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<h1>JD Grab — Manual Test Links</h1>
+<p>
+  Direct links to a known job posting per site, opened in a new tab, for
+  manually exercising the select / open-title shortcuts and the right-click
+  menu. Postings expire — when a "known posting" link 404s, use its
+  fallback search/listing link instead, click any posting, and update the
+  link below.
+</p>
+
+<section>
+  <h2>LinkedIn</h2>
+  <a href="https://www.linkedin.com/jobs/search/" target="_blank">Search jobs</a>
+</section>
+
+<section>
+  <h2>Indeed</h2>
+  <a href="https://www.indeed.com/jobs?q=software+engineer" target="_blank">Search jobs</a>
+</section>
+
+<section>
+  <h2>Glassdoor</h2>
+  <a href="https://www.glassdoor.com/Job/index.htm" target="_blank">Search jobs</a>
+</section>
+
+<section>
+  <h2>Wellfound</h2>
+  <a href="https://wellfound.com/jobs" target="_blank">Search jobs</a>
+</section>
+
+<section>
+  <h2>Welcome to the Jungle</h2>
+  <a href="https://app.welcometothejungle.com/jobs" target="_blank">Search jobs</a>
+</section>
+
+<section>
+  <h2>Greenhouse — dedicated page (job-boards.greenhouse.io)</h2>
+  <a href="https://job-boards.greenhouse.io/discord/jobs/8571766002" target="_blank">Known posting (Discord)</a>
+  <span class="fallback">fallback: <a href="https://job-boards.greenhouse.io/discord" target="_blank">Discord careers</a></span>
+</section>
+
+<section>
+  <h2>Greenhouse — candidate portal modal (my.greenhouse.io)</h2>
+  <a href="https://my.greenhouse.io/jobs?for=kaluza&t=4908617101" target="_blank">Known posting (Kaluza)</a>
+  <p class="note">Kaluza links its title to a custom career page (kaluza.com), not job-boards.greenhouse.io —
+    this is the known-limitation case documented in the changelog. Description selection inside the modal should still work.</p>
+</section>
+
+<section>
+  <h2>Lever</h2>
+  <a href="https://jobs.lever.co/whoop/38493926-11d7-4dbc-8620-243ec9c93f9a" target="_blank">Known posting (Whoop)</a>
+  <span class="fallback">fallback: <a href="https://jobs.lever.co/whoop" target="_blank">Whoop careers</a></span>
+</section>
+
+<section>
+  <h2>Ashby</h2>
+  <a href="https://jobs.ashbyhq.com/ramp/0907ae2a-5334-4d64-9a76-cc9428224546" target="_blank">Known posting (Ramp)</a>
+  <span class="fallback">fallback: <a href="https://jobs.ashbyhq.com/ramp" target="_blank">Ramp careers</a></span>
+</section>
+
+<section>
+  <h2>ZipRecruiter — dedicated job page</h2>
+  <a href="https://www.ziprecruiter.com/c/Netflix/Job/Production-Supervisor/-in-Burbank,CA?jid=62f303069be82b5b" target="_blank">Known posting (Netflix)</a>
+  <span class="fallback">fallback: <a href="https://www.ziprecruiter.com/jobs-search?search=software+engineer" target="_blank">Search jobs</a></span>
+</section>
+
+<section>
+  <h2>ZipRecruiter — search-results two-pane layout</h2>
+  <a href="https://www.ziprecruiter.com/jobs-search?search=director+software+engineering&location=USA&refine_by_location_type=only_remote" target="_blank">Search results</a>
+  <p class="note">Click a job card in the left list to load its description into the right pane, then run the shortcut.</p>
+</section>
+
+<section>
+  <h2>We Work Remotely</h2>
+  <a href="https://weworkremotely.com/remote-jobs/coupa-software-sr-director-product-management-11051" target="_blank">Known posting (Coupa)</a>
+  <span class="fallback">fallback: <a href="https://weworkremotely.com/remote-jobs" target="_blank">Browse listings</a></span>
+</section>
+
+</body>
+</html>
