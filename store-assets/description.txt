@@ -1,0 +1,24 @@
+JD Grab lets you instantly select job description text on the job sites you already use, so you can copy it into notes, resumes, or an ATS with a single keyboard shortcut — no more manually dragging to highlight text.
+
+Supported sites
+• LinkedIn
+• Indeed
+• Glassdoor
+• Wellfound
+• Welcome to the Jungle
+
+Features
+• Customizable keyboard shortcut (default: Option/Alt + Shift + S)
+• Smart detection of the job description section on each site
+• Automatically scrolls the description into view and selects it
+• Works as you navigate between job postings in single-page apps
+• Multiple fallback strategies for reliable selection across site layouts
+• No data collection — all settings stay on your device
+
+How it works
+1. Open any job posting on a supported site
+2. Press your shortcut
+3. The job description is selected and scrolled into view
+4. Copy it with Ctrl+C / Cmd+C
+
+Configure your shortcut anytime from the extension's Options page.

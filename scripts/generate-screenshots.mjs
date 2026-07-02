@@ -101,9 +101,10 @@ async function shootExtensionPages() {
     await optionsPage.close();
 
     const popupPage = await context.newPage();
+    await popupPage.setViewportSize({ width: 1280, height: 800 });
     await popupPage.goto(`chrome-extension://${extensionId}/popup.html`);
     await popupPage.waitForTimeout(300);
-    await popupPage.locator('.popup-container').screenshot({ path: path.join(OUT_DIR, 'popup.png') });
+    await popupPage.screenshot({ path: path.join(OUT_DIR, 'popup.png') });
     await popupPage.close();
 
     console.log(`saved ${path.join(OUT_DIR, 'options-page.png')}`);
