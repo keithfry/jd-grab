@@ -29,5 +29,13 @@ rm -f "$ZIP_PATH"
 cd "$ROOT"
 zip -r "$ZIP_PATH" "${INCLUDE[@]}" -x "*.DS_Store" -x "icons/icon.svg"
 
+# Extract the zip into build/extract/ so the built product can be loaded
+# unpacked (chrome://extensions → Load unpacked) and tested as shipped.
+EXTRACT_DIR="$BUILD_DIR/extract"
+rm -rf "$EXTRACT_DIR"
+mkdir -p "$EXTRACT_DIR"
+unzip -q "$ZIP_PATH" -d "$EXTRACT_DIR"
+
 echo
 echo "Built build/jd-grab.zip"
+echo "Extracted to build/extract/ (load unpacked from there to test)"
