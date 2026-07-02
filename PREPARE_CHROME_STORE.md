@@ -17,6 +17,7 @@
   - `options-page.png` — real extension options UI (loaded via persistent context, `chrome-extension://` origin)
   - `popup.png` — real extension popup UI, cropped to the popup's natural size
   - Note: the toolbar icon click itself (native Chrome browser chrome) can't be captured by Playwright — only the popup's own content, which is what matters for the store listing
+  - [ ] Context-menu screenshot: capture manually (native OS menu — right-click a real job page with the "JD Grab" submenu open; not scriptable via Playwright)
 - [x] Small promo tile: 440x280 — auto-generated via `npm run promo-tiles` (`scripts/generate-promo-tiles.mjs`/`.sh` → `store-assets/promo-tiles/`)
 - [x] Marquee promo tile: 1400x560 (optional, needed for featured placement) — same script
 - [ ] Store icon: 128x128 (already have `icons/icon128.png` — verify meets store quality bar)

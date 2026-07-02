@@ -50,6 +50,9 @@ keithfry@gmail.com
 - **windows**: Used to ensure the browser window has focus before performing
   text selection, which is required for selection to work reliably across
   different site layouts.
+- **contextMenus**: Adds a "JD Grab" right-click menu on the five supported
+  job sites so users can trigger the same three actions available via
+  keyboard shortcuts. The menu only appears on the supported sites.
 - **Host permissions** (linkedin.com, indeed.com, glassdoor.com,
   wellfound.com, welcometothejungle.com): Required to inject the content
   script that locates and selects the job description text on these five

@@ -1,6 +1,6 @@
 {
   "name": "jd-grab",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Chrome extension to quickly select job descriptions on LinkedIn, Indeed, Glassdoor, Wellfound, and Welcome to the Jungle with customizable keyboard shortcuts",
   "type": "module",
   "scripts": {
