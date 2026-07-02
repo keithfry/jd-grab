@@ -1,5 +1,7 @@
 # Chrome Web Store Publishing Checklist — JD Grab
 
+> API credentials + refresh-token expiry fix for the automated deploy workflow: see `docs/chrome-store-credentials.md`
+
 ## Rebrand (done)
 - [x] manifest.json name → "JD Grab"
 - [x] package.json name/description → JD Grab
