@@ -38,7 +38,7 @@ Configure your shortcut anytime from the extension's Options page.
 Productivity
 
 ## Support / contact email
-keithfry@gmail.com
+frybynitesw@gmail.com
 
 ## Permission justifications (for CWS review form)
 

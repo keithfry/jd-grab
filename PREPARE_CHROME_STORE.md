@@ -14,7 +14,7 @@
 - [x] Short description (≤132 chars) — drafted in `STORE_LISTING.md`
 - [x] Detailed description (store listing body) — drafted in `STORE_LISTING.md`
 - [x] Category selection — Productivity
-- [x] Support/contact email — keithfry@gmail.com
+- [x] Support/contact email — frybynitesw@gmail.com
 - [x] Screenshots: auto-generated via `npm run screenshots` (`scripts/generate-screenshots.mjs` → `store-assets/screenshots/`):
   - `options-page.png` — real extension options UI (loaded via persistent context, `chrome-extension://` origin)
   - `popup.png` — real extension popup UI, cropped to the popup's natural size

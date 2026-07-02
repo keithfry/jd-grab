@@ -35,4 +35,4 @@ device. This data:
 
 ## Contact
 
-Questions about this policy: keithfry@gmail.com
+Questions about this policy: frybynitesw@gmail.com

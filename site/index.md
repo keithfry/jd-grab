@@ -33,5 +33,5 @@ Coming soon to the Chrome Web Store.
 
 ## Support
 
-Questions or issues: [keithfry@gmail.com](mailto:keithfry@gmail.com) or open an
+Questions or issues: [frybynitesw@gmail.com](mailto:frybynitesw@gmail.com) or open an
 issue on [GitHub](https://github.com/keithfry/jd-grab/issues).
