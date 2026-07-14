@@ -1,9 +1,9 @@
 # Chrome Web Store Listing — JD Grab
 
 ## Short description (≤132 chars)
-Select and copy job description text on LinkedIn, Indeed, Glassdoor, Wellfound, and Welcome to the Jungle with one keystroke.
+Select and copy job description text on LinkedIn, Indeed, and 8 other job sites with one keystroke.
 
-(117 chars)
+(99 chars)
 
 ## Detailed description
 
@@ -12,11 +12,16 @@ already use, so you can copy it into notes, resumes, or an ATS with a single
 keyboard shortcut — no more manually dragging to highlight text.
 
 **Supported sites**
-- LinkedIn
-- Indeed
-- Glassdoor
-- Wellfound
-- Welcome to the Jungle
+• LinkedIn
+• Indeed
+• Glassdoor
+• Wellfound
+• Welcome to the Jungle
+• Greenhouse
+• Lever
+• Ashby
+• ZipRecruiter
+• We Work Remotely
 
 **Features**
 - Customizable keyboard shortcut (default: Option/Alt + Shift + S)
@@ -56,13 +61,14 @@ frybynitesw@gmail.com
   alternative to the keyboard shortcuts — for discoverability and
   accessibility for users who can't or don't want to use keyboard shortcuts.
   The menu items are registered with `documentUrlPatterns` limited to the
-  five supported job sites, so the menu never appears anywhere else. Menu
+  ten supported job sites, so the menu never appears anywhere else. Menu
   clicks only dispatch the same in-page selection actions as the shortcuts;
   nothing is read from the page beyond that and no data is collected.
 - **Host permissions** (linkedin.com, indeed.com, glassdoor.com,
-  wellfound.com, welcometothejungle.com): Required to inject the content
-  script that locates and selects the job description text on these five
-  specific sites. No other sites are accessed.
+  wellfound.com, welcometothejungle.com, greenhouse.io, lever.co,
+  jobs.ashbyhq.com, ziprecruiter.com, weworkremotely.com): Required to
+  inject the content script that locates and selects the job description
+  text on these ten specific sites. No other sites are accessed.
 
 ## Data usage disclosure (CWS dashboard form)
 - Does this extension collect user data? **No**
