@@ -1,7 +1,7 @@
 {
   "name": "jd-grab",
-  "version": "1.8.6",
-  "description": "Chrome extension to quickly select job descriptions on LinkedIn, Indeed, Glassdoor, Wellfound, Welcome to the Jungle, Greenhouse, Lever, Ashby, ZipRecruiter, and We Work Remotely with customizable keyboard shortcuts",
+  "version": "1.9.0",
+  "description": "Chrome extension to quickly select job descriptions on LinkedIn, Indeed, Glassdoor, Wellfound, Welcome to the Jungle, Greenhouse, Lever, Ashby, ZipRecruiter, We Work Remotely, and Built In with customizable keyboard shortcuts",
   "type": "module",
   "scripts": {
     "test": "playwright test",

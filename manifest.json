@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "JD Grab",
-  "version": "1.8.6",
-  "description": "Quickly select and copy job description text with one keystroke on LinkedIn, Indeed, and 8 other job sites.",
+  "version": "1.9.0",
+  "description": "Quickly select and copy job description text with one keystroke on LinkedIn, Indeed, and 9 other job sites.",
   "permissions": ["storage", "windows", "contextMenus"],
   "icons": {
     "16": "icons/icon16.png",
@@ -26,7 +26,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.linkedin.com/*", "*://*.wellfound.com/*", "*://*.indeed.com/*", "*://*.glassdoor.com/*", "*://*.welcometothejungle.com/*", "*://*.greenhouse.io/*", "*://*.lever.co/*", "*://jobs.ashbyhq.com/*", "*://*.ziprecruiter.com/*", "*://*.weworkremotely.com/*"],
+      "matches": ["*://*.linkedin.com/*", "*://*.wellfound.com/*", "*://*.indeed.com/*", "*://*.glassdoor.com/*", "*://*.welcometothejungle.com/*", "*://*.greenhouse.io/*", "*://*.lever.co/*", "*://jobs.ashbyhq.com/*", "*://*.ziprecruiter.com/*", "*://*.weworkremotely.com/*", "*://*.builtin.com/*"],
       "js": ["storage.js", "content.js"],
       "run_at": "document_idle"
     }

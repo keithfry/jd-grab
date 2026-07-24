@@ -100,6 +100,16 @@ function isWeWorkRemotelyDedicatedPage() {
   return isWeWorkRemotely() && !!document.querySelector('.lis-container__job__content__description');
 }
 
+// Check if we're on Built In
+function isBuiltIn() {
+  return window.location.hostname.includes('builtin.com');
+}
+
+// Check if we're on a dedicated Built In job page (e.g. /job/<slug>/<id>)
+function isBuiltInDedicatedPage() {
+  return isBuiltIn() && /^\/job\/[^/]+\/\d+/.test(window.location.pathname);
+}
+
 // Check if we're on ZipRecruiter
 function isZipRecruiter() {
   return window.location.hostname.includes('ziprecruiter.com');
@@ -161,6 +171,9 @@ function isJobPage() {
   }
   if (isAshby()) {
     return isAshbyDedicatedPage();
+  }
+  if (isBuiltIn()) {
+    return isBuiltInDedicatedPage();
   }
   if (isZipRecruiter()) {
     return isZipRecruiterJobPage();
@@ -697,6 +710,12 @@ function findJobTitleUrl() {
     return null;
   }
 
+  if (isBuiltIn()) {
+    if (isBuiltInDedicatedPage()) return window.location.href;
+    debugLog('warn', 'Could not determine Built In job URL');
+    return null;
+  }
+
   if (isZipRecruiter()) {
     // Both layouts encode the selected job in the current URL: the dedicated
     // page IS the job URL, and the search panel reflects the selected job
@@ -1008,6 +1027,39 @@ function selectAshbyDescription() {
   }
 }
 
+function selectBuiltInDescription() {
+  try {
+    const descWrapper = document.querySelector('.job-post-item .html-parsed-content')?.parentElement;
+
+    if (!descWrapper) {
+      debugLog('warn', 'Could not find Built In job description element');
+      return;
+    }
+
+    // The "Skills Required" list is a separate sibling section right after the
+    // description; include it if present, but stop before "What the Team is
+    // Saying" / compensation / company sections that follow it.
+    let endEl = descWrapper;
+    const next = descWrapper.nextElementSibling;
+    const nextHeading = next?.querySelector('h1, h2, h3, h4, h5');
+    if (nextHeading?.textContent.trim() === 'Skills Required') {
+      endEl = next;
+    }
+
+    const range = document.createRange();
+    range.setStartBefore(descWrapper);
+    range.setEndAfter(endEl);
+    window.focus();
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    descWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    debugLog('log', 'Built In description selected successfully');
+  } catch (error) {
+    debugLog('error', 'Error selecting Built In description', error);
+  }
+}
+
 function selectZipRecruiterDescription() {
   try {
     const heading = findZipRecruiterDescriptionHeading();
@@ -1152,6 +1204,11 @@ function selectAboutTheJobSection() {
 
     if (isLever()) {
       selectLeverDescription();
+      return;
+    }
+
+    if (isBuiltIn()) {
+      selectBuiltInDescription();
       return;
     }
 

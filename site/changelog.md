@@ -6,6 +6,10 @@ permalink: /changelog/
 
 # Changelog
 
+## 1.9.0
+
+- **New site:** Built In.
+
 ## 1.8.6
 
 - Fixed a defect in Indeed selection where it could take a few keystroke
